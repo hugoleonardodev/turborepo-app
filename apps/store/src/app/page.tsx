@@ -34,7 +34,7 @@ export default function StorePage() {
               {orders && orders.length > 0 ? (
                 <div className="space-y-4">
                   {orders.map(order => (
-                    <div key={order.id} className="bg-white/10 p-4 rounded-lg">
+                    <div key={order.id} className="bg-gray-500 p-4 rounded-lg">
                       <p className="font-medium">Order #{order.id}</p>
                       <p className="text-sm opacity-80">Date: {new Date(order.createdAt).toLocaleDateString()}</p>
                       {/* <p className="mt-2">Total: ${order.total.toFixed(2)}</p> */}

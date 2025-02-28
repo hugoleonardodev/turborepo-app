@@ -14,13 +14,13 @@ interface Product {
 export default function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart()
 
-  const handleAddToCart = () => {
+  const handleAddToCart = React.useCallback(() => {
     addItem({
       id: product.id,
       name: product.name,
       price: product.price,
     })
-  }
+  }, [addItem, product])
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">

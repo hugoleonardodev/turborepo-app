@@ -7,10 +7,10 @@ import './globals.css'
 export default function Home() {
   const router = useRouter()
 
-  const handleLogin = () => {
+  const handleLogin = React.useCallback(() => {
     // Mock login - in a real application, this would handle authentication
     router.push('/dashboard')
-  }
+  }, [router])
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">

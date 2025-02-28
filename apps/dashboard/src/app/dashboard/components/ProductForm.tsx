@@ -123,9 +123,9 @@ export default function ProductForm({ existingProduct, onCancel, onSuccess }: Pr
           <button
             type="submit"
             className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
-            disabled={createMutation.isPending || updateMutation.isPending}
+            disabled={createMutation.isLoading || updateMutation.isLoading}
           >
-            {createMutation.isPending || updateMutation.isPending
+            {createMutation.isLoading || updateMutation.isLoading
               ? 'Saving...'
               : existingProduct
                 ? 'Update Product'

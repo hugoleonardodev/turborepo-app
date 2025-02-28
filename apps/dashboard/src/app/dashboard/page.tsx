@@ -1,12 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import React from 'react'
 import { trpc } from '../../utils/trpc'
 import ProductForm from './components/ProductForm'
 
 export default function Dashboard() {
-  const [isAddingProduct, setIsAddingProduct] = useState(false)
-  const [editingProduct, setEditingProduct] = useState<any>(null)
+  const [isAddingProduct, setIsAddingProduct] = React.useState(false)
+  const [editingProduct, setEditingProduct] = React.useState<any>(null)
 
   const utils = trpc.useUtils()
   const { data: products, isLoading } = trpc.products.getAll.useQuery()
@@ -16,26 +16,32 @@ export default function Dashboard() {
     },
   })
 
-  const handleDelete = (id: number) => {
-    if (confirm('Are you sure you want to delete this product?')) {
-      deleteMutation.mutate({ id })
-    }
-  }
+  const handleDelete = React.useCallback(
+    (id: number) => {
+      if (confirm('Are you sure you want to delete this product?')) {
+        deleteMutation.mutate({ id })
+      }
+    },
+    [deleteMutation],
+  )
 
-  const handleEdit = (product: any) => {
-    setEditingProduct(product)
-    setIsAddingProduct(true)
-  }
+  const handleEdit = React.useCallback(
+    (product: any) => {
+      setEditingProduct(product)
+      setIsAddingProduct(true)
+    },
+    [setEditingProduct, setIsAddingProduct],
+  )
 
-  const handleCloseForm = () => {
+  const handleCloseForm = React.useCallback(() => {
     setIsAddingProduct(false)
     setEditingProduct(null)
-  }
+  }, [setIsAddingProduct, setEditingProduct])
 
-  const handleFormSuccess = () => {
+  const handleFormSuccess = React.useCallback(() => {
     utils.products.getAll.invalidate()
     handleCloseForm()
-  }
+  }, [utils, handleCloseForm])
 
   return (
     <div className="container mx-auto py-8 px-4">

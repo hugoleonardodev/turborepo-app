@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useContext, useState, ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 
 export interface CartItem {
   id: number
@@ -19,12 +19,12 @@ interface CartContextType {
   totalPrice: number
 }
 
-const CartContext = createContext<CartContextType | undefined>(undefined)
+const CartContext = React.createContext<CartContextType | undefined>(undefined)
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([])
+  const [items, setItems] = React.useState<CartItem[]>([])
 
-  const addItem = (product: { id: number; name: string; price: number }) => {
+  const addItem = React.useCallback((product: { id: number; name: string; price: number }) => {
     setItems(prevItems => {
       const existingItem = prevItems.find(item => item.id === product.id)
 
@@ -34,28 +34,31 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
       return [...prevItems, { ...product, quantity: 1 }]
     })
-  }
+  }, [])
 
-  const removeItem = (id: number) => {
+  const removeItem = React.useCallback((id: number) => {
     setItems(prevItems => prevItems.filter(item => item.id !== id))
-  }
+  }, [])
 
-  const updateQuantity = (id: number, quantity: number) => {
-    if (quantity <= 0) {
-      removeItem(id)
-      return
-    }
+  const updateQuantity = React.useCallback(
+    (id: number, quantity: number) => {
+      if (quantity <= 0) {
+        removeItem(id)
+        return
+      }
 
-    setItems(prevItems => prevItems.map(item => (item.id === id ? { ...item, quantity } : item)))
-  }
+      setItems(prevItems => prevItems.map(item => (item.id === id ? { ...item, quantity } : item)))
+    },
+    [removeItem],
+  )
 
-  const clearCart = () => {
+  const clearCart = React.useCallback(() => {
     setItems([])
-  }
+  }, [])
 
-  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0)
+  const totalItems = React.useMemo(() => items.reduce((sum, item) => sum + item.quantity, 0), [items])
 
-  const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
+  const totalPrice = React.useMemo(() => items.reduce((sum, item) => sum + item.price * item.quantity, 0), [items])
 
   return (
     <CartContext.Provider
@@ -75,7 +78,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 }
 
 export function useCart() {
-  const context = useContext(CartContext)
+  const context = React.useContext(CartContext)
   if (context === undefined) {
     throw new Error('useCart must be used within a CartProvider')
   }

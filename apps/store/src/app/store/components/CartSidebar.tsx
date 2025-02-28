@@ -1,14 +1,14 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import { useCart } from '../../../context/cart-context'
 import { trpc } from '../../../utils/trpc'
 
 // Cart sidebar component to display cart items and checkout
 export default function CartSidebar() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [isCheckingOut, setIsCheckingOut] = useState(false)
-  const [customerInfo, setCustomerInfo] = useState({
+  const [isOpen, setIsOpen] = React.useState(false)
+  const [isCheckingOut, setIsCheckingOut] = React.useState(false)
+  const [customerInfo, setCustomerInfo] = React.useState({
     name: '',
     email: '',
     address: '',
@@ -26,28 +26,31 @@ export default function CartSidebar() {
     },
   })
 
-  const handleCheckout = () => {
+  const handleCheckout = React.useCallback(() => {
     if (!items.length) return
     setIsCheckingOut(true)
-  }
+  }, [items])
 
-  const handleSubmitOrder = (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleSubmitOrder = React.useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault()
 
-    if (items.length === 0) return
+      if (items.length === 0) return
 
-    createOrderMutation.mutate({
-      products: items,
-    })
-  }
+      createOrderMutation.mutate({
+        products: items,
+      })
+    },
+    [items],
+  )
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setCustomerInfo(prev => ({
       ...prev,
       [name]: value,
     }))
-  }
+  }, [])
 
   return (
     <>
@@ -154,9 +157,9 @@ export default function CartSidebar() {
                   <button
                     type="submit"
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-md"
-                    disabled={createOrderMutation.isPending}
+                    disabled={createOrderMutation.isLoading}
                   >
-                    {createOrderMutation.isPending ? 'Processing...' : 'Place Order'}
+                    {createOrderMutation.isLoading ? 'Processing...' : 'Place Order'}
                   </button>
                   <button
                     type="button"
