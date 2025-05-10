@@ -1,28 +1,27 @@
 {
-    "name": "e-commerce-monorepo",
-    "version": "0.0.1",
-    "private": false,
-    "workspaces": [
-      "apps/*",
-      "packages/*"
-    ],
-    "scripts": {
-      "build": "turbo run build",
-      "dev": "turbo run dev",
-      "lint": "turbo run lint",
-      "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-      "db:generate": "turbo run db:generate",
-      "db:push": "turbo run db:push",
-       "check-types": "turbo run check-types"
-    },
-    "dependencies": {},
-    "devDependencies": {
-      "prettier": "^3.1.0",
-      "turbo": "^1.11.2",
-      "typescript": "^5.3.3"
-    },
-    "packageManager": "npm@9.6.7",
-    "engines": {
-        "node": ">=18"
-    }
+  "name": "e-commerce-monorepo",
+  "version": "0.0.1",
+  "private": false,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "db:generate": "turbo run db:generate",
+    "db:push": "turbo run db:push",
+    "check-types": "turbo run check-types"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.2",
+    "turbo": "^1.11.2",
+    "typescript": "^5.3.3"
+  },
+  "packageManager": "npm@9.6.7",
+  "engines": {
+    "node": ">=18"
   }
+}
